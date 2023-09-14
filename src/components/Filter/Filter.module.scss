@@ -11,33 +11,6 @@
     display: flex;
     justify-content: space-around;
 }
-.listItem{
-    display: inline;
-    margin-top: 10px;
-    vertical-align: middle;
-    // border: 1px solid #DFE5EC;
-    
-}
-.checkbox{
-    visibility: hidden;
-    vertical-align: middle;
-    position: relative;
-    width: 1px;
-    height: 1px;
-}
-.checkbox::after{
-    visibility: visible;
-    position: absolute;
-    content: " ";
-    right: 2px;
-    top: -10px;
-    width: 20px;
-    height: 20px;
-    background-image: url(./Checkbox.svg);
-}
-.checkbox:checked::after{
-    background-image: url(./Checkbox_checked.svg);
-}
 @media (min-width:960px) {
     .filter{
         width: 232px;

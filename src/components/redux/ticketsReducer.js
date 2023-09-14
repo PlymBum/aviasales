@@ -21,20 +21,20 @@ export function ticketReducer(state = initialState, actions = {}) {
     }
     case 'FILTER_TICKETS_ADD': {
       const filteredTickets = state.tickets.filter((el) => {
-        if (actions.filter === 'one') return el.segments[0].stops.length === 1 && el.segments[1].stops.length === 1
-        if (actions.filter === 'two') return el.segments[0].stops.length === 2 && el.segments[1].stops.length === 2
-        if (actions.filter === 'three') return el.segments[0].stops.length === 3 && el.segments[1].stops.length === 3
-        if (actions.filter === 'without') return el.segments[0].stops.length === 0 && el.segments[1].stops.length === 0
+        if (actions.filter === 'ONE') return el.segments[0].stops.length === 1 && el.segments[1].stops.length === 1
+        if (actions.filter === 'TWO') return el.segments[0].stops.length === 2 && el.segments[1].stops.length === 2
+        if (actions.filter === 'THREE') return el.segments[0].stops.length === 3 && el.segments[1].stops.length === 3
+        if (actions.filter === 'WITHOUT') return el.segments[0].stops.length === 0 && el.segments[1].stops.length === 0
         return false
       })
       return { ...state, filteredTickets: [...state.filteredTickets, ...filteredTickets] }
     }
     case 'FILTER_TICKETS_DELETE': {
       const filteredTickets = state.filteredTickets.filter((el) => {
-        if (actions.filter === 'one') return el.segments[0].stops.length !== 1 && el.segments[1].stops.length !== 1
-        if (actions.filter === 'two') return el.segments[0].stops.length !== 2 && el.segments[1].stops.length !== 2
-        if (actions.filter === 'three') return !el.segments[0].stops.length !== 3 && el.segments[1].stops.length !== 3
-        if (actions.filter === 'without') return el.segments[0].stops.length !== 0 && el.segments[1].stops.length !== 0
+        if (actions.filter === 'ONE') return el.segments[0].stops.length !== 1 && el.segments[1].stops.length !== 1
+        if (actions.filter === 'TWO') return el.segments[0].stops.length !== 2 && el.segments[1].stops.length !== 2
+        if (actions.filter === 'THREE') return !el.segments[0].stops.length !== 3 && el.segments[1].stops.length !== 3
+        if (actions.filter === 'WITHOUT') return el.segments[0].stops.length !== 0 && el.segments[1].stops.length !== 0
         return false
       })
       return { ...state, filteredTickets }
@@ -81,16 +81,13 @@ export function ticketReducer(state = initialState, actions = {}) {
 
 export const fetchTickets = (id) => async (dispatch) => {
   const apiTickets = new ApiTickets()
-  // eslint-disable-next-line no-unused-vars
   const subscribe = async (searchId) => {
     const response = await apiTickets.getTickets(searchId)
 
     if (response.status === 500) {
       await subscribe(searchId)
     } else if (response.status !== 200) {
-      // eslint-disable-next-line no-promise-executor-return
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      subscribe(searchId)
+      setTimeout(() => subscribe(searchId), 1000)
     } else {
       const tickets = await response.json()
       dispatch(setTickets(tickets))
@@ -103,7 +100,4 @@ export const fetchTickets = (id) => async (dispatch) => {
     }
   }
   subscribe(id)
-  // const response = await apiTickets.getTickets(id)
-  // const tickets = await response.json()
-  // dispatch(setTickets(tickets))
 }

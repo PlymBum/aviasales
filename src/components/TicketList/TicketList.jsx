@@ -10,7 +10,7 @@ import classes from './TicketList.module.scss'
 
 export default function TicketList() {
   const { tickets, filteredTickets, isLoading } = useSelector((state) => state.tickets)
-  const { all, one, two, three, without } = useSelector((state) => state.filter)
+  const filters = useSelector((state) => state.filter)
   const [showedTickets, setShowedTickets] = useState([])
   const [countTickets, setCountTickets] = useState(5)
   const [isSorted, setIsSorted] = useState(false)
@@ -22,11 +22,12 @@ export default function TicketList() {
   }, [tickets, countTickets, filteredTickets, isSorted, sorting])
 
   useEffect(() => {
-    if (one || two || three || without) setIsSorted(true)
-
-    if (all || (!one && !two && !three && !without)) setIsSorted(false)
-    if (!one && !two && !three && !without) setIsSorted(false)
-  }, [one, two, three, without, all])
+    const sortedOn = filters[1].checked || filters[2].checked || filters[3].checked || filters[4].checked
+    const showAll =
+      filters[0].checked || (!filters[1].checked && !filters[2].checked && !filters[3].checked && !filters[4].checked)
+    if (sortedOn) setIsSorted(true)
+    if (showAll) setIsSorted(false)
+  }, [filters])
 
   const showMore = () => {
     setCountTickets((prev) => prev + 10)
